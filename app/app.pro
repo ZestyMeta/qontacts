@@ -4,7 +4,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = qontacts
 TEMPLATE = app
-LIBS += -llibqontacts -L../src/lib
+LIBS += -lqontacts -L../src/lib
 DESTDIR = bin
 MOC_DIR = build
 UI_DIR = build
