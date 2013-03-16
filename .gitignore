@@ -1,1 +1,5 @@
 qontacts.pro.user
+tests.pro.user
+app/app.pro.user
+src/lib/
+*~
