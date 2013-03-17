@@ -12,8 +12,11 @@ RCC_DIR = build
 
 SOURCES += mainwindow.cpp \
     contactdetailview.cpp \
-    contactdetailtypedelegate.cpp
+    contactdetailtypedelegate.cpp \
+    contactlist.cpp
 HEADERS  += mainwindow.h \
     contactdetailview.h \
-    contactdetailtypedelegate.h
-FORMS    += mainwindow.ui
+    contactdetailtypedelegate.h \
+    contactlist.h
+FORMS    += mainwindow.ui \
+    contactlist.ui
