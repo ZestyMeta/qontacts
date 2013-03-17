@@ -3,6 +3,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "contactlist.h"
+#include "contactdetails.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -17,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QSplitter* splitter = new QSplitter;
     splitter->setOrientation(Qt::Horizontal);
     splitter->addWidget(contactList);
-    splitter->addWidget(new QWidget);
+    splitter->addWidget(new ContactDetails);
     splitter->setSizes(QList<int>() << 300 << width()-300);
     splitter->setStretchFactor(0, 0);
     splitter->setStretchFactor(1, 1);
@@ -28,4 +29,9 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::on_actionQuit_triggered()
+{
+    close();
 }

@@ -11,8 +11,11 @@ UI_DIR = build
 RCC_DIR = build
 
 SOURCES += mainwindow.cpp \
-    contactlist.cpp
+    contactlist.cpp \
+    contactdetails.cpp
 HEADERS  += mainwindow.h \
-    contactlist.h
+    contactlist.h \
+    contactdetails.h
 FORMS    += mainwindow.ui \
-    contactlist.ui
+    contactlist.ui \
+    contactdetails.ui
