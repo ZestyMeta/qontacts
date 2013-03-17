@@ -1,3 +1,3 @@
 TEMPLATE = subdirs
 CONFIG += ordered
-SUBDIRS = ../src tst_contactdetailtypedelegate tst_contactdetailview
+SUBDIRS = ../src tst_contactdetailtypedelegate tst_contactdetailview tst_mainwindow
