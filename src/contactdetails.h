@@ -14,7 +14,15 @@ class ContactDetails : public QWidget
 public:
     explicit ContactDetails(QWidget *parent = 0);
     ~ContactDetails();
+
+public slots:
+    void onPatientClicked(QString patientName);
     
+private slots:
+    void on_saveBtn_clicked();
+
+    void on_editBtn_clicked();
+
 private:
     Ui::ContactDetails *ui;
 };

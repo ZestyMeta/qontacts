@@ -19,11 +19,16 @@ public:
 
     void setModel(QStandardItemModel* model);
 
+signals:
+    void patientSelected(QString name);
+
 private slots:
     void on_addContact_clicked();
     void on_removeContact_clicked();
 
     void on_searchLine_textEdited(const QString &arg1);
+
+    void on_contactList_clicked(const QModelIndex &index);
 
 private:
     Ui::ContactList *ui;

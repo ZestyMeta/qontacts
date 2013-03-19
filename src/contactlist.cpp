@@ -46,3 +46,8 @@ void ContactList::on_removeContact_clicked()
     int sourceRow = searchContactListModel->mapToSource(ui->contactList->currentIndex()).row();
     contactListModel->removeRow(sourceRow);
 }
+
+void ContactList::on_contactList_clicked(const QModelIndex &index)
+{
+    emit patientSelected(index.data().toString());
+}

@@ -15,15 +15,19 @@ MainWindow::MainWindow(QWidget *parent) :
     QStandardItemModel* contactListModel = new QStandardItemModel(this);
     contactList->setModel(contactListModel);
 
+    ContactDetails* contactDetails = new ContactDetails;
+
     QSplitter* splitter = new QSplitter;
     splitter->setOrientation(Qt::Horizontal);
     splitter->addWidget(contactList);
-    splitter->addWidget(new ContactDetails);
-    splitter->setSizes(QList<int>() << 300 << width()-300);
+    splitter->addWidget(contactDetails);
+    splitter->setSizes(QList<int>() << width()/3 << 2*width()/3);
     splitter->setStretchFactor(0, 0);
     splitter->setStretchFactor(1, 1);
 
     setCentralWidget(splitter);
+
+    connect(contactList, &ContactList::patientSelected, contactDetails, &ContactDetails::onPatientClicked);
 }
 
 MainWindow::~MainWindow()
