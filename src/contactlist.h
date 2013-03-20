@@ -21,6 +21,7 @@ public:
 
 signals:
     void patientSelected(QString name);
+    void saveData();
 
 private slots:
     void on_addContact_clicked();

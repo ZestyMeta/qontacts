@@ -18,9 +18,13 @@ public:
 
 private slots:
     void on_actionQuit_triggered();
+    void saveDataToJson();
 
 private:
     Ui::MainWindow *ui;
+    QStandardItemModel* contactListModel;
+
+    void loadContactsDataIntoModel();
 };
 
 #endif // MAINWINDOW_H

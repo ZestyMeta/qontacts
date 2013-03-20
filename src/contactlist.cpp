@@ -14,6 +14,8 @@ ContactList::ContactList(QWidget *parent) :
     searchContactListModel->setDynamicSortFilter(true);
 
     ui->contactList->setModel(searchContactListModel);
+
+    connect(ui->pushButton, &QPushButton::clicked, this, &ContactList::saveData);
 }
 
 ContactList::~ContactList()
@@ -30,6 +32,7 @@ void ContactList::setModel(QStandardItemModel *model)
 void ContactList::on_addContact_clicked()
 {
     contactListModel->appendRow(QList<QStandardItem*>() << new QStandardItem(QIcon(":/qt-project.org/qmessagebox/images/qtlogo-64.png"), "First Last"));
+
 }
 
 void ContactList::on_searchLine_textEdited(const QString &arg1)
