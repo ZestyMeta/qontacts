@@ -2,6 +2,7 @@
 #define CONTACTDETAILS_H
 
 #include <QWidget>
+#include <QJsonDocument>
 
 namespace Ui {
 class ContactDetails;
@@ -15,8 +16,13 @@ public:
     explicit ContactDetails(QWidget *parent = 0);
     ~ContactDetails();
 
+    void setDocument(QJsonDocument* document);
+
 public slots:
-    void onPatientClicked(QString patientName);
+    void onPatientClicked(const QModelIndex &index);
+
+signals:
+    void saveContactDetails();
     
 private slots:
     void on_saveBtn_clicked();
@@ -25,6 +31,12 @@ private slots:
 
 private:
     Ui::ContactDetails *ui;
+    QJsonDocument* document;
+    int m_rowIndex;
+
+    void loadDetailsFromDocument();
+
+    void writeDetailsToDocument();
 };
 
 #endif // CONTACTDETAILS_H

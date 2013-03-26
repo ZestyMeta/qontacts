@@ -2,9 +2,6 @@
 #include <QFile>
 #include <QStandardPaths>
 #include <QDir>
-#include <QJsonArray>
-#include <QJsonValue>
-#include <QJsonObject>
 #include <QJsonParseError>
 #include <QJsonDocument>
 
@@ -15,18 +12,17 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow),
-    contactListModel(new QStandardItemModel(this))
+    ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
-    ContactList* contactList = new ContactList;    
+    initJsonDocument();
 
-    contactList->setModel(contactListModel);
-
-    loadContactsDataIntoModel();
+    ContactList* contactList = new ContactList;
+    contactList->setDocument(document);
 
     ContactDetails* contactDetails = new ContactDetails;
+    contactDetails->setDocument(document);
 
     QSplitter* splitter = new QSplitter;
     splitter->setOrientation(Qt::Horizontal);
@@ -38,13 +34,14 @@ MainWindow::MainWindow(QWidget *parent) :
 
     setCentralWidget(splitter);
 
-    connect(contactList, &ContactList::patientSelected, contactDetails, &ContactDetails::onPatientClicked);
-    connect(contactList, &ContactList::saveData, this, &MainWindow::saveDataToJson);
+    connect(contactList, &ContactList::currentIndexChanged, contactDetails, &ContactDetails::onPatientClicked);
+    connect(contactDetails, &ContactDetails::saveContactDetails, this, &MainWindow::saveDataToDisk);
+    connect(contactDetails, &ContactDetails::saveContactDetails, contactList, &ContactList::loadContactsDataIntoModel);
 }
 
 MainWindow::~MainWindow()
 {
-    saveDataToJson();
+    saveDataToDisk();
     delete ui;
 }
 
@@ -53,31 +50,21 @@ void MainWindow::on_actionQuit_triggered()
     close();
 }
 
-void MainWindow::saveDataToJson()
+void MainWindow::saveDataToDisk()
 {
-    QJsonArray array;
-    for(int row = 0; row < contactListModel->rowCount(); row++)
-    {
-        QJsonObject object;
-        object.insert("name", contactListModel->index(row, 0).data().toString());
-        array.append(object);
-    }
-
-    QJsonDocument document;
-    document.setArray(array);
-
     QFile file(QStandardPaths::writableLocation(QStandardPaths::DataLocation)+"/contactlist.json");
     file.open(QIODevice::WriteOnly);
-    file.write(document.toJson());
+    file.write(document->toJson());
 
     if(file.error() == QFile::NoError)
         statusBar()->showMessage("Sucessfully saved contact list.");
     else
         statusBar()->showMessage("Saved contact list: " + file.errorString());
+
     file.close();
 }
 
-void MainWindow::loadContactsDataIntoModel()
+void MainWindow::initJsonDocument()
 {
     QDir dir;
     dir.mkpath(QStandardPaths::writableLocation(QStandardPaths::DataLocation));
@@ -87,21 +74,12 @@ void MainWindow::loadContactsDataIntoModel()
 
     QJsonParseError error;
     QString content = file.readAll();
-    QJsonDocument document = QJsonDocument::fromJson(content.toUtf8(), &error);
+    file.close();
 
-    if(error.error == QJsonParseError::NoError)
+    document = new QJsonDocument(QJsonDocument::fromJson(content.toUtf8(), &error));
+
+    if(document->isArray() && error.error == QJsonParseError::NoError)
         statusBar()->showMessage("Sucessfully loaded contact list.");
     else
         statusBar()->showMessage("Loaded contact list: " + error.errorString());
-
-    file.close();
-
-    QJsonArray array = document.array();
-    QJsonArray::iterator begin = array.begin();
-
-    while(begin!=document.array().end())
-    {
-        contactListModel->appendRow(QList<QStandardItem*>() << new QStandardItem(QIcon(":/qt-project.org/qmessagebox/images/qtlogo-64.png"), (*begin).toObject().value("name").toString()));
-        begin++;
-    }
 }

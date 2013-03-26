@@ -47,6 +47,12 @@
        <height>0</height>
       </size>
      </property>
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
+     <property name="showDropIndicator" stdset="0">
+      <bool>false</bool>
+     </property>
     </widget>
    </item>
    <item>
@@ -66,13 +72,6 @@
         </size>
        </property>
       </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton">
-       <property name="text">
-        <string>PushButton</string>
-       </property>
-      </widget>
      </item>
      <item>
       <widget class="QToolButton" name="removeContact">
