@@ -10,13 +10,13 @@ class JsonArrayModel : public QAbstractListModel
 public:
     explicit JsonArrayModel(QObject *parent = 0);
         
-    QVariant data(const QModelIndex &index, int role) const;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
     bool insertRows(int row, int count, const QModelIndex &parent);
 
     bool removeRows(int row, int count, const QModelIndex &parent);
 
-    int rowCount(const QModelIndex &parent) const;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const;
 
     void setJsonArray(const QJsonArray& array);
 

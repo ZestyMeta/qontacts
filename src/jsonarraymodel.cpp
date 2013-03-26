@@ -10,7 +10,7 @@ JsonArrayModel::JsonArrayModel(QObject *parent) :
 QVariant JsonArrayModel::data(const QModelIndex &index, int role) const
 {
     Q_UNUSED(role);
-    return array.at(index.row()).toObject().value(key);
+    return array.at(index.row()).toObject().value(key).toString();
 }
 
 bool JsonArrayModel::insertRows(int row, int count, const QModelIndex &parent)
