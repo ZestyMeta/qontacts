@@ -18,9 +18,13 @@ public:
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
 
+    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
+
     void setJsonArray(const QJsonArray& array);
 
     void setJsonObjectKey(const QString& key);
+
+    QJsonArray toArray();
 
 signals:
     

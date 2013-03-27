@@ -64,7 +64,42 @@ private slots:
         model.removeRow(0);
 
         QVERIFY(model.rowCount() == 0);
+    }
 
+    void set_data_can_be_read_from_model() {
+        JsonArrayModel model(this);
+        model.setJsonObjectKey("name");
+        model.insertRow(0);
+
+        QModelIndex index = model.index(0);
+
+        model.setData(index, QString("test"));
+
+        QJsonObject object;
+        object.insert("name", QString("test"));
+
+        QJsonArray array;
+        array.append(object);
+
+        QVERIFY(model.data(index).toString() == QString("test"));
+    }
+
+    void model_produces_expected_json_array() {
+        JsonArrayModel model(this);
+        model.setJsonObjectKey("name");
+        model.insertRow(0);
+
+        QModelIndex index = model.index(0);
+
+        model.setData(index, QString("test"));
+
+        QJsonObject object;
+        object.insert("name", QString("test"));
+
+        QJsonArray array;
+        array.append(object);
+
+        QVERIFY(model.toArray() == array);
     }
 };
 
