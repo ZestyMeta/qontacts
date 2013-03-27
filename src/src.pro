@@ -13,11 +13,13 @@ RCC_DIR = build
 SOURCES += mainwindow.cpp \
     contactlist.cpp \
     contactdetails.cpp \
-    jsonarraymodel.cpp
+    jsonarraymodel.cpp \
+    jsonobjectmodel.cpp
 HEADERS  += mainwindow.h \
     contactlist.h \
     contactdetails.h \
-    jsonarraymodel.h
+    jsonarraymodel.h \
+    jsonobjectmodel.h
 FORMS    += mainwindow.ui \
     contactlist.ui \
     contactdetails.ui

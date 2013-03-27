@@ -75,12 +75,6 @@ private slots:
 
         model.setData(index, QString("test"));
 
-        QJsonObject object;
-        object.insert("name", QString("test"));
-
-        QJsonArray array;
-        array.append(object);
-
         QVERIFY(model.data(index).toString() == QString("test"));
     }
 

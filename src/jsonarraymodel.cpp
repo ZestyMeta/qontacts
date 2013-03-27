@@ -11,7 +11,7 @@ QVariant JsonArrayModel::data(const QModelIndex &index, int role) const
 {
     if(role == Qt::DisplayRole)
     {
-        return array.at(index.row()).toObject().value(key).toString();
+        return jsonArray.at(index.row()).toObject().value(jsonObjectKey).toString();
     }
 
     return QVariant();
@@ -20,7 +20,7 @@ QVariant JsonArrayModel::data(const QModelIndex &index, int role) const
 bool JsonArrayModel::insertRows(int row, int count, const QModelIndex &parent)
 {
     beginInsertRows(parent, row, row+count-1);
-    array.insert(row, QJsonValue());
+    jsonArray.insert(row, QJsonValue());
     endInsertRows();
 
     return false;
@@ -29,7 +29,7 @@ bool JsonArrayModel::insertRows(int row, int count, const QModelIndex &parent)
 bool JsonArrayModel::removeRows(int row, int count, const QModelIndex &parent)
 {
     beginRemoveRows(parent, row, row+count-1);
-    array.removeAt(row);
+    jsonArray.removeAt(row);
     endRemoveRows();
 
     return false;
@@ -38,7 +38,7 @@ bool JsonArrayModel::removeRows(int row, int count, const QModelIndex &parent)
 int JsonArrayModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
-    return array.count();
+    return jsonArray.count();
 }
 
 bool JsonArrayModel::setData(const QModelIndex &index, const QVariant &value, int role)
@@ -47,10 +47,10 @@ bool JsonArrayModel::setData(const QModelIndex &index, const QVariant &value, in
 
     if(index.isValid())
     {
-        QJsonObject object = array.at(index.row()).toObject();
-        object.insert(key, QJsonValue(value.toString()));
+        QJsonObject object = jsonArray.at(index.row()).toObject();
+        object.insert(jsonObjectKey, QJsonValue(value.toString()));
 
-        array.replace(index.row(), object);
+        jsonArray.replace(index.row(), object);
 
         return true;
     }
@@ -61,18 +61,18 @@ bool JsonArrayModel::setData(const QModelIndex &index, const QVariant &value, in
 void JsonArrayModel::setJsonArray(const QJsonArray &array)
 {
     beginResetModel();
-    this->array = array;
+    jsonArray = array;
     endResetModel();
 }
 
 void JsonArrayModel::setJsonObjectKey(const QString &key)
 {    
     beginResetModel();
-    this->key = key;
+    jsonObjectKey = key;
     endResetModel();
 }
 
 QJsonArray JsonArrayModel::toArray()
 {
-    return array;
+    return jsonArray;
 }

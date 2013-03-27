@@ -1,15 +1,17 @@
-#ifndef JSONARRAYMODEL_H
-#define JSONARRAYMODEL_H
+#ifndef JSONOBJECTMODEL_H
+#define JSONOBJECTMODEL_H
 
-#include <QAbstractListModel>
-#include <QJsonArray>
+#include <QAbstractTableModel>
+#include <QJsonObject>
 
-class JsonArrayModel : public QAbstractListModel
+class JsonObjectModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    explicit JsonArrayModel(QObject *parent = 0);
-        
+    explicit JsonObjectModel(QObject *parent = 0);
+
+    int columnCount(const QModelIndex &parent) const;
+
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
     bool insertRows(int row, int count, const QModelIndex &parent);
@@ -20,15 +22,13 @@ public:
 
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
 
-    void setJsonArray(const QJsonArray& array);
+    void setJsonObject(const QJsonObject& object);
 
-    void setJsonObjectKey(const QString& key);
-
-    QJsonArray toArray();
-
+    QJsonObject toJsonObject();
+    
 private:
-    QJsonArray jsonArray;
-    QString jsonObjectKey;
+    QJsonObject jsonObject;
+    
 };
 
-#endif // JSONARRAYMODEL_H
+#endif // JSONOBJECTMODEL_H
