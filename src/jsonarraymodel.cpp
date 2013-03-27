@@ -9,8 +9,12 @@ JsonArrayModel::JsonArrayModel(QObject *parent) :
 
 QVariant JsonArrayModel::data(const QModelIndex &index, int role) const
 {
-    Q_UNUSED(role);
-    return array.at(index.row()).toObject().value(key).toString();
+    if(role == Qt::DisplayRole)
+    {
+        return array.at(index.row()).toObject().value(key).toString();
+    }
+
+    return QVariant();
 }
 
 bool JsonArrayModel::insertRows(int row, int count, const QModelIndex &parent)
@@ -41,7 +45,6 @@ bool JsonArrayModel::setData(const QModelIndex &index, const QVariant &value, in
 {
     Q_UNUSED(role)
 
-
     if(index.isValid())
     {
         QJsonObject object = array.at(index.row()).toObject();
@@ -57,12 +60,16 @@ bool JsonArrayModel::setData(const QModelIndex &index, const QVariant &value, in
 
 void JsonArrayModel::setJsonArray(const QJsonArray &array)
 {
+    beginResetModel();
     this->array = array;
+    endResetModel();
 }
 
 void JsonArrayModel::setJsonObjectKey(const QString &key)
-{
+{    
+    beginResetModel();
     this->key = key;
+    endResetModel();
 }
 
 QJsonArray JsonArrayModel::toArray()

@@ -101,6 +101,31 @@ private slots:
 
         QVERIFY(model.toArray() == array);
     }
+
+    void setting_array_resets_model() {
+        JsonArrayModel model(this);
+
+        QSignalSpy begin(&model, SIGNAL(modelAboutToBeReset()));
+        QSignalSpy end(&model, SIGNAL(modelReset()));
+
+        model.setJsonArray(QJsonArray());
+
+        QVERIFY(begin.count() > 0);
+        QVERIFY(end.count() > 0);
+    }
+
+    void setting_key_resets_model() {
+        JsonArrayModel model(this);
+
+        QSignalSpy begin(&model, SIGNAL(modelAboutToBeReset()));
+        QSignalSpy end(&model, SIGNAL(modelReset()));
+
+        model.setJsonObjectKey("key");
+
+        QVERIFY(begin.count() > 0);
+        QVERIFY(end.count() > 0);
+
+    }
 };
 
 QTEST_MAIN(tst_JsonArrayModel)

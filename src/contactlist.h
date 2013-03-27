@@ -2,8 +2,9 @@
 #define CONTACTLIST_H
 
 #include <QWidget>
-#include <QStandardItemModel>
 #include <QSortFilterProxyModel>
+
+#include "jsonarraymodel.h"
 
 namespace Ui {
 class ContactList;
@@ -34,7 +35,7 @@ private slots:
 
 private:
     Ui::ContactList *ui;
-    QStandardItemModel* contactListModel;
+    JsonArrayModel* contactListModel;
     QSortFilterProxyModel* searchContactListModel;
     QJsonDocument* document;
 };

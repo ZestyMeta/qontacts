@@ -9,7 +9,7 @@
 ContactList::ContactList(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ContactList),
-    contactListModel(new QStandardItemModel(this)),
+    contactListModel(new JsonArrayModel(this)),
     searchContactListModel(new QSortFilterProxyModel(this))
 {
     ui->setupUi(this);
@@ -18,6 +18,8 @@ ContactList::ContactList(QWidget *parent) :
     searchContactListModel->setSourceModel(contactListModel);
 
     ui->contactList->setModel(searchContactListModel);
+
+    contactListModel->setJsonObjectKey("name");
 
     connect(ui->contactList, &QListView::clicked, this, &ContactList::currentIndexChanged);
 }
@@ -31,21 +33,15 @@ void ContactList::setDocument(QJsonDocument *document)
 {
     this->document = document;
 
-    loadContactsDataIntoModel();
+    contactListModel->setJsonArray(document->array());
 }
 
 void ContactList::on_addContact_clicked()
 {
-    contactListModel->appendRow(QList<QStandardItem*>() << new QStandardItem("First Last"));
+    contactListModel->insertRow(contactListModel->rowCount());
+    contactListModel->setData(contactListModel->index(contactListModel->rowCount()-1), "New Contact");
 
-    QJsonObject newContact;
-    newContact.insert("name", QString("New Contact"));
-
-    QJsonArray array = document->array();
-    array.append(newContact);
-    document->setArray(array);
-
-    loadContactsDataIntoModel();
+    document->setArray(contactListModel->toArray());
 
     ui->contactList->setCurrentIndex(ui->contactList->model()->index(ui->contactList->model()->rowCount()-1, 0));
     emit currentIndexChanged(ui->contactList->currentIndex());
@@ -76,18 +72,7 @@ void ContactList::loadContactsDataIntoModel()
 {
     QPersistentModelIndex currentIndex = ui->contactList->currentIndex();
 
-    contactListModel->clear();
-
-    QJsonArray array = document->array();
-    QJsonArray::iterator begin = array.begin();
-
-    while(begin != array.end())
-    {
-        QString name = (*begin).toObject().value("name").toString();
-
-        contactListModel->appendRow(QList<QStandardItem*>() << new QStandardItem(name));
-        begin++;
-    }
+    contactListModel->setJsonArray(document->array());
 
     if(currentIndex.isValid())
         ui->contactList->setCurrentIndex(currentIndex);
