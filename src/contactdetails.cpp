@@ -37,6 +37,8 @@ void ContactDetails::on_saveBtn_clicked()
 {
     writeDetailsToDocument();
 
+    loadDetailsFromDocument();
+
     emit saveContactDetails();
 
     setReadMode(true);

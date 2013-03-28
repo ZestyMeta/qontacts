@@ -29,7 +29,7 @@
       </size>
      </property>
      <property name="placeholderText">
-      <string>Search for contacts</string>
+      <string>Search for a contact</string>
      </property>
     </widget>
    </item>
@@ -91,6 +91,12 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>contactList</tabstop>
+  <tabstop>searchLine</tabstop>
+  <tabstop>addContact</tabstop>
+  <tabstop>removeContact</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

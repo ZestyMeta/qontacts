@@ -71,7 +71,7 @@
              <item>
               <widget class="QPushButton" name="addGroupBtn">
                <property name="text">
-                <string>Add Detail Group</string>
+                <string>Add Group</string>
                </property>
               </widget>
              </item>

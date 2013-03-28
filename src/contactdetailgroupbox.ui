@@ -34,7 +34,11 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="QLineEdit" name="groupNameEdit"/>
+           <widget class="QLineEdit" name="groupNameEdit">
+            <property name="placeholderText">
+             <string>Enter a group name</string>
+            </property>
+           </widget>
           </item>
           <item>
            <widget class="QTableView" name="tableView">

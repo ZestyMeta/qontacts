@@ -66,15 +66,16 @@ void ContactDetailGroupBox::on_stackedWidget_currentChanged(int index)
 
         QFormLayout* formLayout = qobject_cast<QFormLayout*>(ui->readGroupBox->layout());
 
-        while(QLayoutItem* item = formLayout->itemAt(0))
+        QLayoutItem* item;
+        while((item = formLayout->takeAt(0)) != 0)
         {
-            formLayout->removeItem(item);
+            delete item->widget();
             delete item;
         }
 
         for(int row = 0; row < model->rowCount(); row++)
         {
-            formLayout->addRow(new QLabel(model->index(row, 0).data().toString()), new QLabel(model->index(row, 1).data().toString()));
+            formLayout->addRow(model->index(row, 0).data().toString(), new QLabel(model->index(row, 1).data().toString()));
         }
     }
 }
