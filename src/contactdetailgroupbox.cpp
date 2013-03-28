@@ -30,6 +30,7 @@ void ContactDetailGroupBox::setJsonObject(const QJsonObject &object)
 
 QJsonObject ContactDetailGroupBox::toJsonObject()
 {
+    /// TODO: Assemble data in model into a QJsonObject
     return QJsonObject();
 }
 

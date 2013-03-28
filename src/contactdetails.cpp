@@ -85,27 +85,22 @@ void ContactDetails::loadDetailsFromDocument()
 
 void ContactDetails::writeDetailsToDocument()
 {
-    /// TODO: iterate through list of group objects, grab their data
-    /*QJsonObject detailsObject;
-    detailsObject.insert("phone", QJsonValue(ui->home_phone->text()));
-    detailsObject.insert("email", QJsonValue(ui->home_email->text()));
-    detailsObject.insert("address", QJsonValue(ui->home_address->text()));
+    QJsonArray detailGroupArray;
 
-    QJsonObject homeObject;
-    homeObject.insert("group", QJsonValue(QString("home")));
-    homeObject.insert("details", detailsObject);
-
-    QJsonArray array;
-    array.append(homeObject);
+    foreach(ContactDetailGroupBox* detailGroup, contactDetailList)
+    {
+        if(!detailGroup->toJsonObject().isEmpty())
+            detailGroupArray.append(detailGroup->toJsonObject());
+    }
 
     QJsonObject contactObject;
     contactObject.insert("name", ui->nameLineEdit->text());
-    contactObject.insert("detailGroups", array);
+    contactObject.insert("detailGroups", detailGroupArray);
 
     QJsonArray currentArray = document->array();
-    currentArray.replace(m_rowIndex, contactObject);
+    currentArray.replace(rowIndex, contactObject);
 
-    document->setArray(currentArray);*/
+    document->setArray(currentArray);
 }
 
 void ContactDetails::setReadMode(bool readMode)
