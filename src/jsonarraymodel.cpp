@@ -10,9 +10,7 @@ JsonArrayModel::JsonArrayModel(QObject *parent) :
 QVariant JsonArrayModel::data(const QModelIndex &index, int role) const
 {
     if(role == Qt::DisplayRole)
-    {
         return jsonArray.at(index.row()).toObject().value(jsonObjectKey).toString();
-    }
 
     return QVariant();
 }
