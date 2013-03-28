@@ -33,12 +33,11 @@ QJsonObject ContactDetailGroupBox::toJsonObject()
 
     for(int rowIndex = 0; rowIndex < model->rowCount(); rowIndex++)
     {
-        QVariant keyData = model->index(rowIndex, 0).data();
+        QVariant keyData = model->index(rowIndex, 0).data(Qt::EditRole);
         QVariant valueData = model->index(rowIndex, 1).data();
 
         if(!keyData.isNull() && !valueData.isNull())
         {
-            /// TODO: sanitize input
             groupFields.insert(keyData.toString(), valueData.toString());
         }
     }
@@ -82,6 +81,5 @@ void ContactDetailGroupBox::on_stackedWidget_currentChanged(int index)
 
 void ContactDetailGroupBox::on_addDetailBtn_clicked()
 {
-    int newRowIndex = model->rowCount() == 0 ? 0 : model->rowCount() - 1;
-    model->insertRow(newRowIndex);
+    model->insertRow(model->rowCount());
 }

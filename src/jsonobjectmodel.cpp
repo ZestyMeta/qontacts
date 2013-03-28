@@ -43,7 +43,9 @@ Qt::ItemFlags JsonObjectModel::flags(const QModelIndex &index) const
 bool JsonObjectModel::insertRow(int row, const QModelIndex &parent)
 {
     Q_UNUSED(parent);
+    beginInsertRows(parent, row, row);
     jsonPairList.insert(row, JsonKeyValuePair());
+    endInsertRows();
 
     return true;
 }
@@ -51,7 +53,9 @@ bool JsonObjectModel::insertRow(int row, const QModelIndex &parent)
 bool JsonObjectModel::removeRow(int row, const QModelIndex &parent)
 {
     Q_UNUSED(parent);
+    beginRemoveRows(parent, row, row);
     jsonPairList.removeAt(row);
+    endRemoveRows();
 
     return true;
 }

@@ -118,7 +118,31 @@ private slots:
 
         QVERIFY(begin.count() > 0);
         QVERIFY(end.count() > 0);
+    }
 
+    void inserting_row_triggers_signals() {
+        JsonArrayModel model(this);
+
+        QSignalSpy begin(&model, SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)));
+        QSignalSpy end(&model, SIGNAL(rowsInserted(QModelIndex,int,int)));
+
+        model.insertRow(0);
+
+        QVERIFY(begin.count() > 0);
+        QVERIFY(end.count() > 0);
+    }
+
+    void removing_row_triggers_signals() {
+        JsonArrayModel model(this);
+
+        QSignalSpy begin(&model, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)));
+        QSignalSpy end(&model, SIGNAL(rowsRemoved(QModelIndex,int,int)));
+
+        model.insertRow(0);
+        model.removeRow(0);
+
+        QVERIFY(begin.count() > 0);
+        QVERIFY(end.count() > 0);
     }
 };
 

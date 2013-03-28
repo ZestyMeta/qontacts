@@ -137,7 +137,32 @@ private slots:
         model.setData(model.index(0, 0), QString("key"));
         model.setData(model.index(0, 1), QString("value"));
 
-        QVERIFY(model.flags(model.index(0, 0)) == Qt::ItemIsEditable|Qt::ItemIsEnabled);
+        QVERIFY(model.flags(model.index(0, 0)) == (Qt::ItemIsEditable|Qt::ItemIsEnabled));
+    }
+
+    void inserting_row_triggers_signals() {
+        JsonObjectModel model(this);
+
+        QSignalSpy begin(&model, SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)));
+        QSignalSpy end(&model, SIGNAL(rowsInserted(QModelIndex,int,int)));
+
+        model.insertRow(0);
+
+        QVERIFY(begin.count() > 0);
+        QVERIFY(end.count() > 0);
+    }
+
+    void removing_row_triggers_signals() {
+        JsonObjectModel model(this);
+
+        QSignalSpy begin(&model, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)));
+        QSignalSpy end(&model, SIGNAL(rowsRemoved(QModelIndex,int,int)));
+
+        model.insertRow(0);
+        model.removeRow(0);
+
+        QVERIFY(begin.count() > 0);
+        QVERIFY(end.count() > 0);
     }
 };
 

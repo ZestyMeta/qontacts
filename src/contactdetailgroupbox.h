@@ -32,6 +32,8 @@ private slots:
 private:
     Ui::ContactDetailGroupBox *ui;
     JsonObjectModel* model;
+
+    QString sanitizeInput(const QString& input);
 };
 
 #endif // CONTACTDETAILGROUPBOX_H
