@@ -15,12 +15,21 @@ int JsonObjectModel::columnCount(const QModelIndex &parent) const
 
 QVariant JsonObjectModel::data(const QModelIndex &index, int role) const
 {
-    if(index.isValid() && role == Qt::DisplayRole)
+    if(index.isValid() && (role == Qt::DisplayRole || role == Qt::EditRole))
     {
+        QString data;
+
         if(index.column() == 0)
-            return jsonPairList.at(index.row()).key;
+        {
+            data = jsonPairList.at(index.row()).key;
+
+            if(role == Qt::DisplayRole)
+                data.append(":");
+        }
         else if(index.column() == 1)
-            return jsonPairList.at(index.row()).value.toString();
+            data = jsonPairList.at(index.row()).value.toString();
+
+        return data;
     }
 
     return QVariant();
@@ -28,7 +37,7 @@ QVariant JsonObjectModel::data(const QModelIndex &index, int role) const
 
 Qt::ItemFlags JsonObjectModel::flags(const QModelIndex &index) const
 {
-    return index.isValid() ? Qt::ItemIsEditable : Qt::NoItemFlags;
+    return index.isValid() ? Qt::ItemIsEditable|Qt::ItemIsEnabled : Qt::NoItemFlags;
 }
 
 bool JsonObjectModel::insertRow(int row, const QModelIndex &parent)

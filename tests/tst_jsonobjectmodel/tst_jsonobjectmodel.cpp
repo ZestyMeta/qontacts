@@ -115,7 +115,7 @@ private slots:
         model.setData(model.index(0, 0), QString("key"));
         model.setData(model.index(0, 1), QString("value"));
 
-        QVERIFY(model.flags(model.index(0, 0)) == Qt::ItemIsEditable);
+        QVERIFY(model.flags(model.index(0, 0)) == Qt::ItemIsEditable|Qt::ItemIsEnabled);
     }
 };
 

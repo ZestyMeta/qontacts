@@ -14,12 +14,15 @@ SOURCES += mainwindow.cpp \
     contactlist.cpp \
     contactdetails.cpp \
     jsonarraymodel.cpp \
-    jsonobjectmodel.cpp
+    jsonobjectmodel.cpp \
+    contactdetailgroupbox.cpp
 HEADERS  += mainwindow.h \
     contactlist.h \
     contactdetails.h \
     jsonarraymodel.h \
-    jsonobjectmodel.h
+    jsonobjectmodel.h \
+    contactdetailgroupbox.h
 FORMS    += mainwindow.ui \
     contactlist.ui \
-    contactdetails.ui
+    contactdetails.ui \
+    contactdetailgroupbox.ui

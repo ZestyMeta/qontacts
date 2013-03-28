@@ -25,117 +25,102 @@ void ContactDetails::setDocument(QJsonDocument *document)
 
 void ContactDetails::onPatientClicked(const QModelIndex& index)
 {
-    m_rowIndex = index.row();
+    rowIndex = index.row();
 
     loadDetailsFromDocument();
 
-    ui->stackedWidget->setCurrentWidget(ui->readOnlyPage);
+    ui->stackedWidget->setCurrentWidget(ui->populatedPage);
+    setReadMode(true);
 }
 
 void ContactDetails::on_saveBtn_clicked()
 {
     writeDetailsToDocument();
 
-    loadDetailsFromDocument();
-
-    ui->stackedWidget->setCurrentWidget(ui->readOnlyPage);
-
     emit saveContactDetails();
+
+    setReadMode(true);
 }
 
 void ContactDetails::on_editBtn_clicked()
 {
-    // set values
-    ui->stackedWidget->setCurrentWidget(ui->editablePage);
+    setReadMode(false);
 }
 
 void ContactDetails::loadDetailsFromDocument()
 {
-    if(!document->array().at(m_rowIndex).isObject())
+    if(!document->array().at(rowIndex).isObject())
     {
         //qDebug() << "error! Item at rowIndex" << m_rowIndex << "is not an object!";
         return;
     }
 
-    QJsonObject object = document->array().at(m_rowIndex).toObject();
+    QJsonObject object = document->array().at(rowIndex).toObject();
 
     ui->nameLbl->setText(object.value("name").toString());
+    ui->nameLineEdit->setText(object.value("name").toString());
 
-    QJsonArray array;
-    if(!object.contains("details"))
+    while(QLayoutItem* item = ui->detailGroupLayout->itemAt(0))
     {
-        object.insert("details", array);
+        ui->detailGroupLayout->removeItem(item);
+        delete item;
     }
 
-    array = object.value("details").toArray();
-
-    QJsonArray::iterator begin = array.begin();
-
-    while(begin != array.end())
+    if(object.contains("detailGroups"))
     {
-        QJsonObject object = (*begin).toObject();
+        QJsonArray array = object.value("detailGroups").toArray();
 
-        QJsonObject::iterator detailIt = object.find("group");
+        QJsonArray::const_iterator begin = array.constBegin();
 
-        if(QJsonValue(*detailIt).toString() == "home")
+        while(begin != array.end())
         {
-            detailIt = object.find("phone");
-            if(detailIt != object.end())
-                ui->homephone->setText(QJsonValue(*detailIt).toString());
+            QJsonObject object = (*begin).toObject();
 
-            detailIt = object.find("address");
-            if(detailIt != object.end())
-                ui->homeaddress->setText(QJsonValue(*detailIt).toString());
+            contactDetailList.append(new ContactDetailGroupBox);
+            contactDetailList.last()->setJsonObject(object);
 
-            detailIt = object.find("email");
-            if(detailIt != object.end())
-                ui->homeemail->setText(QJsonValue(*detailIt).toString());
+            ui->detailGroupLayout->addWidget(contactDetailList.last());
+
+            begin++;
         }
-        else if(QJsonValue(*detailIt).toString() == "group")
-        {
-            detailIt = object.find("phone");
-            if(detailIt != object.end())
-                ui->workphone->setText(QJsonValue(*detailIt).toString());
-
-            detailIt = object.find("address");
-            if(detailIt != object.end())
-                ui->workaddress->setText(QJsonValue(*detailIt).toString());
-
-            detailIt = object.find("email");
-            if(detailIt != object.end())
-                ui->workemail->setText(QJsonValue(*detailIt).toString());
-        }
-
-       begin++;
-    }
+    }    
 }
 
 void ContactDetails::writeDetailsToDocument()
 {
-    QJsonArray array;
+    /// TODO: iterate through list of group objects, grab their data
+    /*QJsonObject detailsObject;
+    detailsObject.insert("phone", QJsonValue(ui->home_phone->text()));
+    detailsObject.insert("email", QJsonValue(ui->home_email->text()));
+    detailsObject.insert("address", QJsonValue(ui->home_address->text()));
 
     QJsonObject homeObject;
     homeObject.insert("group", QJsonValue(QString("home")));
-    homeObject.insert("phone", QJsonValue(ui->home_phone->text()));
-    homeObject.insert("email", QJsonValue(ui->home_email->text()));
-    homeObject.insert("address", QJsonValue(ui->home_address->text()));
+    homeObject.insert("details", detailsObject);
 
+    QJsonArray array;
     array.append(homeObject);
-
-    QJsonObject workObject;
-    workObject.insert("group", QJsonValue(QString("work")));
-    workObject.insert("phone", QJsonValue(ui->work_phone->text()));
-    workObject.insert("email", QJsonValue(ui->work_email->text()));
-    workObject.insert("address", QJsonValue(ui->work_address->text()));
-
-    array.append(workObject);
 
     QJsonObject contactObject;
     contactObject.insert("name", ui->nameLineEdit->text());
-    contactObject.insert("details", array);
+    contactObject.insert("detailGroups", array);
 
     QJsonArray currentArray = document->array();
     currentArray.replace(m_rowIndex, contactObject);
 
-    document->setArray(currentArray);
+    document->setArray(currentArray);*/
+}
+
+void ContactDetails::setReadMode(bool readMode)
+{
+    ui->editBtn->setVisible(readMode);
+    ui->nameLbl->setVisible(readMode);
+
+    ui->saveBtn->setVisible(!readMode);
+    ui->nameLineEdit->setVisible(!readMode);
+
+    foreach(ContactDetailGroupBox* wgt, contactDetailList)
+    {
+        wgt->setToReadMode(readMode);
+    }
 }

@@ -4,6 +4,8 @@
 #include <QWidget>
 #include <QJsonDocument>
 
+#include "contactdetailgroupbox.h"
+
 namespace Ui {
 class ContactDetails;
 }
@@ -32,11 +34,14 @@ private slots:
 private:
     Ui::ContactDetails *ui;
     QJsonDocument* document;
-    int m_rowIndex;
+    int rowIndex;
+    QList<ContactDetailGroupBox*> contactDetailList;
 
     void loadDetailsFromDocument();
 
     void writeDetailsToDocument();
+
+    void setReadMode(bool readMode);
 };
 
 #endif // CONTACTDETAILS_H
