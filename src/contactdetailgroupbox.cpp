@@ -11,7 +11,6 @@ ContactDetailGroupBox::ContactDetailGroupBox(QWidget *parent) :
     ui->setupUi(this);
     ui->stackedWidget->setCurrentWidget(ui->editPage);
     ui->tableView->setModel(model);
-    ui->readGroupBox->setTitle("");
 }
 
 ContactDetailGroupBox::~ContactDetailGroupBox()
@@ -23,15 +22,36 @@ void ContactDetailGroupBox::setJsonObject(const QJsonObject &object)
 {
     ui->groupNameEdit->setText(object.value("group").toString());
 
-    model->setJsonObject(object.value("details").toObject());
+    model->setJsonObject(object.value("fields").toObject());
 
     on_stackedWidget_currentChanged(ui->stackedWidget->indexOf(ui->readPage));
 }
 
 QJsonObject ContactDetailGroupBox::toJsonObject()
 {
-    /// TODO: Assemble data in model into a QJsonObject
-    return QJsonObject();
+    QJsonObject groupFields;
+
+    for(int rowIndex = 0; rowIndex < model->rowCount(); rowIndex++)
+    {
+        QVariant keyData = model->index(rowIndex, 0).data();
+        QVariant valueData = model->index(rowIndex, 1).data();
+
+        if(!keyData.isNull() && !valueData.isNull())
+        {
+            /// TODO: sanitize input
+            groupFields.insert(keyData.toString(), valueData.toString());
+        }
+    }
+
+    QJsonObject groupDetails;
+
+    if(!ui->groupNameEdit->text().isEmpty() && !groupFields.isEmpty())
+    {
+        groupDetails.insert("group", ui->groupNameEdit->text());
+        groupDetails.insert("fields", groupFields);
+    }
+
+    return groupDetails;
 }
 
 void ContactDetailGroupBox::setToReadMode(bool readMode)
@@ -62,5 +82,6 @@ void ContactDetailGroupBox::on_stackedWidget_currentChanged(int index)
 
 void ContactDetailGroupBox::on_addDetailBtn_clicked()
 {
-    model->insertRow(model->rowCount()-1);
+    int newRow = model->rowCount() == 0 ? 0 : model->rowCount() - 1;
+    model->insertRow(newRow);
 }
