@@ -24,7 +24,7 @@ public:
 
     void setJsonObjectKey(const QString& key);
 
-    QJsonArray toArray();
+    const QJsonArray toArray() const;
 
 private:
     QJsonArray jsonArray;

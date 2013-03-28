@@ -76,8 +76,8 @@ private slots:
         JsonObjectModel model(this);
         model.insertRow(0);
 
-        model.setData(model.index(0, 0), QString("key"));
-        model.setData(model.index(0, 1), QString("value"));
+        model.setData(model.index(0, 0), "key");
+        model.setData(model.index(0, 1), "value");
 
         QVERIFY(model.index(0, 0).data().toString() == QString("key"));
         QVERIFY(model.index(0, 1).data().toString() == QString("value"));
@@ -87,13 +87,13 @@ private slots:
         JsonObjectModel model(this);
         model.insertRow(0);
 
-        model.setData(model.index(0, 0), QString("key"));
-        model.setData(model.index(0, 1), QString("value"));
+        model.setData(model.index(0, 0), "key");
+        model.setData(model.index(0, 1), "value");
 
         QJsonObject object;
         object.insert("key", QString("value"));
 
-        QVERIFY(model.jsonObject() == object);
+        QVERIFY(model.toJsonObject() == object);
     }
 
     void setting_object_resets_model() {
@@ -106,6 +106,16 @@ private slots:
 
         QVERIFY(begin.count() > 0);
         QVERIFY(end.count() > 0);
+    }
+
+    void flags_returns_editable() {
+        JsonObjectModel model(this);
+        model.insertRow(0);
+
+        model.setData(model.index(0, 0), QString("key"));
+        model.setData(model.index(0, 1), QString("value"));
+
+        QVERIFY(model.flags(model.index(0, 0)) == Qt::ItemIsEditable);
     }
 };
 

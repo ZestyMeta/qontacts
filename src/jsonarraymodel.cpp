@@ -72,7 +72,7 @@ void JsonArrayModel::setJsonObjectKey(const QString &key)
     endResetModel();
 }
 
-QJsonArray JsonArrayModel::toArray()
+const QJsonArray JsonArrayModel::toArray() const
 {
     return jsonArray;
 }

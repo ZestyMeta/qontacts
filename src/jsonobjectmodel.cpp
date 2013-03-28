@@ -1,5 +1,7 @@
 #include "jsonobjectmodel.h"
 
+#define COLUMN_COUNT 2
+
 JsonObjectModel::JsonObjectModel(QObject *parent) :
     QAbstractTableModel(parent)
 {
@@ -7,40 +9,95 @@ JsonObjectModel::JsonObjectModel(QObject *parent) :
 
 int JsonObjectModel::columnCount(const QModelIndex &parent) const
 {
-    return 2;
+    Q_UNUSED(parent);
+    return COLUMN_COUNT;
 }
 
 QVariant JsonObjectModel::data(const QModelIndex &index, int role) const
 {
+    if(index.isValid() && role == Qt::DisplayRole)
+    {
+        if(index.column() == 0)
+            return jsonPairList.at(index.row()).key;
+        else if(index.column() == 1)
+            return jsonPairList.at(index.row()).value.toString();
+    }
+
     return QVariant();
 }
 
-bool JsonObjectModel::insertRows(int row, int count, const QModelIndex &parent)
+Qt::ItemFlags JsonObjectModel::flags(const QModelIndex &index) const
 {
-    return false;
+    return index.isValid() ? Qt::ItemIsEditable : Qt::NoItemFlags;
 }
 
-bool JsonObjectModel::removeRows(int row, int count, const QModelIndex &parent)
+bool JsonObjectModel::insertRow(int row, const QModelIndex &parent)
 {
-    return false;
+    Q_UNUSED(parent);
+    jsonPairList.insert(row, JsonKeyValuePair());
+
+    return true;
+}
+
+bool JsonObjectModel::removeRow(int row, const QModelIndex &parent)
+{
+    Q_UNUSED(parent);
+    jsonPairList.removeAt(row);
+
+    return true;
 }
 
 int JsonObjectModel::rowCount(const QModelIndex &parent) const
 {
-    return 0;
+    Q_UNUSED(parent)
+    return jsonPairList.count();
 }
 
 bool JsonObjectModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
+    Q_UNUSED(role)
+
+    if(index.isValid())
+    {
+        JsonKeyValuePair pair = jsonPairList.at(index.row());
+
+        if(index.column() == 0)
+            pair.key = value.toString();
+        else if(index.column() == 1)
+            pair.value = value.toString();
+
+        jsonPairList.replace(index.row(), pair);
+
+        return true;
+    }
+
     return false;
 }
 
 void JsonObjectModel::setJsonObject(const QJsonObject &object)
 {
-    jsonObject = object;
+    beginResetModel();
+    jsonPairList.clear();
+
+    QJsonObject::const_iterator it = object.constBegin();
+
+    while(it != object.end())
+    {
+        jsonPairList.append(JsonKeyValuePair(it.key(), it.value()));
+        it++;
+    }
+
+    endResetModel();
 }
 
-QJsonObject JsonObjectModel::toJsonObject()
+const QJsonObject JsonObjectModel::toJsonObject() const
 {
-    return QJsonObject();
+    QJsonObject object;
+
+    foreach(JsonKeyValuePair pair, jsonPairList)
+    {
+        object.insert(pair.key, pair.value);
+    }
+
+    return object;
 }
