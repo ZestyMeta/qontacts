@@ -82,6 +82,6 @@ void ContactDetailGroupBox::on_stackedWidget_currentChanged(int index)
 
 void ContactDetailGroupBox::on_addDetailBtn_clicked()
 {
-    int newRow = model->rowCount() == 0 ? 0 : model->rowCount() - 1;
-    model->insertRow(newRow);
+    int newRowIndex = model->rowCount() == 0 ? 0 : model->rowCount() - 1;
+    model->insertRow(newRowIndex);
 }

@@ -29,7 +29,7 @@ private slots:
         QVERIFY(model.rowCount() == 0);
     }
 
-    void data_returns_value_for_first_column() {
+    void data_returns_value_for_first_column_display_role() {
         JsonObjectModel model(this);
 
         QJsonObject object;
@@ -37,7 +37,18 @@ private slots:
 
         model.setJsonObject(object);
 
-        QCOMPARE(model.data(model.index(0, 0)).toString(), QString("key"));
+        QCOMPARE(model.data(model.index(0, 0)).toString(), QString("key:"));
+    }
+
+    void data_returns_value_for_first_column_edit_role() {
+        JsonObjectModel model(this);
+
+        QJsonObject object;
+        object.insert("key", QString("value"));
+
+        model.setJsonObject(object);
+
+        QCOMPARE(model.data(model.index(0, 0), Qt::EditRole).toString(), QString("key"));
     }
 
     void data_returns_value_for_second_column() {
@@ -72,15 +83,26 @@ private slots:
         QVERIFY(model.rowCount() == 0);
     }
 
-    void set_data_can_be_read_from_model() {
+    void set_data_can_be_read_from_model_display_role() {
         JsonObjectModel model(this);
         model.insertRow(0);
 
         model.setData(model.index(0, 0), "key");
         model.setData(model.index(0, 1), "value");
 
-        QVERIFY(model.index(0, 0).data().toString() == QString("key"));
+        QVERIFY(model.index(0, 0).data().toString() == QString("key:"));
         QVERIFY(model.index(0, 1).data().toString() == QString("value"));
+    }
+
+    void set_data_can_be_read_from_model_edit_role() {
+        JsonObjectModel model(this);
+        model.insertRow(0);
+
+        model.setData(model.index(0, 0), "key");
+        model.setData(model.index(0, 1), "value");
+
+        QVERIFY(model.index(0, 0).data(Qt::EditRole).toString() == QString("key"));
+        QVERIFY(model.index(0, 1).data(Qt::EditRole).toString() == QString("value"));
     }
 
     void model_produces_expected_json_object() {
