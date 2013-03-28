@@ -27,6 +27,8 @@ public:
 private slots:
     void on_stackedWidget_currentChanged(int index);
 
+    void on_addDetailBtn_clicked();
+
 private:
     Ui::ContactDetailGroupBox *ui;
     JsonObjectModel* model;

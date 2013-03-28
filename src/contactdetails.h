@@ -31,6 +31,8 @@ private slots:
 
     void on_editBtn_clicked();
 
+    void on_addGroupBtn_clicked();
+
 private:
     Ui::ContactDetails *ui;
     QJsonDocument* document;

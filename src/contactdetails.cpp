@@ -74,12 +74,9 @@ void ContactDetails::loadDetailsFromDocument()
 
         while(begin != array.end())
         {
-            QJsonObject object = (*begin).toObject();
+            on_addGroupBtn_clicked();
 
-            contactDetailList.append(new ContactDetailGroupBox);
-            contactDetailList.last()->setJsonObject(object);
-
-            ui->detailGroupLayout->addWidget(contactDetailList.last());
+            contactDetailList.last()->setJsonObject((*begin).toObject());
 
             begin++;
         }
@@ -118,9 +115,16 @@ void ContactDetails::setReadMode(bool readMode)
 
     ui->saveBtn->setVisible(!readMode);
     ui->nameLineEdit->setVisible(!readMode);
+    ui->addGroupBtn->setVisible(!readMode);
 
     foreach(ContactDetailGroupBox* wgt, contactDetailList)
     {
         wgt->setToReadMode(readMode);
     }
+}
+
+void ContactDetails::on_addGroupBtn_clicked()
+{
+    contactDetailList.append(new ContactDetailGroupBox);
+    ui->detailGroupLayout->addWidget(contactDetailList.last());
 }

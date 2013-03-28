@@ -54,6 +54,30 @@
             <layout class="QVBoxLayout" name="detailGroupLayout"/>
            </item>
            <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <item>
+              <spacer name="horizontalSpacer_2">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="addGroupBtn">
+               <property name="text">
+                <string>Add Detail Group</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
             <spacer name="verticalSpacer">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -61,7 +85,7 @@
              <property name="sizeHint" stdset="0">
               <size>
                <width>20</width>
-               <height>357</height>
+               <height>322</height>
               </size>
              </property>
             </spacer>

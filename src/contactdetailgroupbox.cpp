@@ -9,7 +9,7 @@ ContactDetailGroupBox::ContactDetailGroupBox(QWidget *parent) :
     model(new JsonObjectModel(this))
 {
     ui->setupUi(this);
-    ui->stackedWidget->setCurrentWidget(ui->readPage);
+    ui->stackedWidget->setCurrentWidget(ui->editPage);
     ui->tableView->setModel(model);
     ui->readGroupBox->setTitle("");
 }
@@ -57,4 +57,9 @@ void ContactDetailGroupBox::on_stackedWidget_currentChanged(int index)
             formLayout->addRow(new QLabel(model->index(row, 0).data().toString()), new QLabel(model->index(row, 1).data().toString()));
         }
     }
+}
+
+void ContactDetailGroupBox::on_addDetailBtn_clicked()
+{
+    model->insertRow(model->rowCount()-1);
 }
