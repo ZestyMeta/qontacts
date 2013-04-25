@@ -62,6 +62,8 @@ void ContactDetails::loadDetailsFromDocument()
     ui->nameLbl->setText(object.value("name").toString());
     ui->nameLineEdit->setText(object.value("name").toString());
 
+    contactDetailList.clear();
+
     while(QLayoutItem* item = ui->detailGroupLayout->takeAt(0))
     {
         delete item->widget();

@@ -57,7 +57,7 @@ void MainWindow::saveDataToDisk()
     file.write(document->toJson());
 
     if(file.error() == QFile::NoError)
-        statusBar()->showMessage("Sucessfully saved contact list.");
+        statusBar()->showMessage("Successfully saved contact list.");
     else
         statusBar()->showMessage("Saved contact list: " + file.errorString());
 
