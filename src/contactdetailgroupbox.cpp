@@ -1,4 +1,5 @@
 #include <QLabel>
+#include <QFormLayout>
 
 #include "contactdetailgroupbox.h"
 #include "ui_contactdetailgroupbox.h"
@@ -64,15 +65,13 @@ void ContactDetailGroupBox::on_stackedWidget_currentChanged(int index)
     {
         ui->readGroupBox->setTitle(ui->groupNameEdit->text());
 
-        QFormLayout* formLayout = qobject_cast<QFormLayout*>(ui->readGroupBox->layout());
-
-        QLayoutItem* item;
-        while((item = formLayout->takeAt(0)) != 0)
+        while(QLayoutItem *item = ui->readGroupBox->layout()->takeAt(0))
         {
             delete item->widget();
             delete item;
         }
 
+        QFormLayout* formLayout = qobject_cast<QFormLayout*>(ui->readGroupBox->layout());
         for(int row = 0; row < model->rowCount(); row++)
         {
             formLayout->addRow(model->index(row, 0).data().toString(), new QLabel(model->index(row, 1).data().toString()));
