@@ -74,7 +74,9 @@ void ContactDetailGroupBox::on_stackedWidget_currentChanged(int index)
         QFormLayout* formLayout = qobject_cast<QFormLayout*>(ui->readGroupBox->layout());
         for(int row = 0; row < model->rowCount(); row++)
         {
-            formLayout->addRow(model->index(row, 0).data().toString(), new QLabel(model->index(row, 1).data().toString()));
+            QLabel *dataLbl = new QLabel(model->index(row, 1).data().toString());
+            dataLbl->setTextInteractionFlags(Qt::TextBrowserInteraction);
+            formLayout->addRow(model->index(row, 0).data().toString(), dataLbl);
         }
     }
 }
